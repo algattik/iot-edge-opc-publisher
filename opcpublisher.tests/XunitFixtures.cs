@@ -21,26 +21,13 @@ namespace OpcPublisher
     {
         public PlcOpcUaServer()
         {
-            Uri dockerUri = null;
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    dockerUri = new Uri("tcp://127.0.0.1:2375");
-                }
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    dockerUri = new Uri("unix:///var/run/docker.sock");
-                }
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    dockerUri = new Uri("not supported");
-                }
-                _dockerClient = new DockerClientConfiguration(dockerUri).CreateClient();
+                _dockerClient = new DockerClientConfiguration().CreateClient();
             }
             catch
             {
-                throw new Exception($"Please adjust your docker deamon endpoint '{dockerUri}' for your configuration.");
+                throw new Exception($"Please adjust your docker daemon for your configuration.");
             }
 
             // cleanup all PLC containers
